@@ -30,7 +30,7 @@ export default function AuthButtons() {
     }
     return (
         <button
-            onClick={() => signIn('google')}
+            onClick={() => signIn('google', { callbackUrl: '/chat' })}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
             Sign in with Google

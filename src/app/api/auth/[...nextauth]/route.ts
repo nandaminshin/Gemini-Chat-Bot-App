@@ -2,6 +2,7 @@ import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "@/src/lib/mongodb"
+import { ObjectId } from "mongodb";
 
 export const authOptions = {
     adapter: MongoDBAdapter(clientPromise),
@@ -9,13 +10,15 @@ export const authOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            allowDangerousEmailAccountLinking: true,
         }),
     ],
-    // Optional: Add callbacks to control session data
     callbacks: {
         async session({ session, user }: { session: any; user: any }) {
-            // Add user id to the session object
+            // The user object already contains all the data from the database.
+            // Simply assign the properties to the session.
             session.user.id = user.id;
+            session.user.apiKey = user.apiKey; // Directly access the apiKey from the user object
             return session;
         },
     },
@@ -24,4 +27,3 @@ export const authOptions = {
 const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
-
