@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function POST(req: Request) {
-    const session = await getServerSession(authOptions as any);
+    const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
     }
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
             if (!existingConv) {
                 return new Response(JSON.stringify({ error: 'Conversation not found or access denied' }), { status: 404 });
             }
-            await convCol.updateOne({ _id: new ObjectId(convId) }, { $push: { messages: message }, $set: { updatedAt: new Date() } });
+            await (convCol as any).updateOne({ _id: new ObjectId(convId) }, { $push: { messages: message }, $set: { updatedAt: new Date() } });
         }
 
         // Build a prompt for the model using the last user message + short history context
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
 
         const botMessage = { id: Date.now().toString() + '-bot', sender: 'bot', text: botText, timestamp: new Date().toLocaleTimeString() };
 
-        await convCol.updateOne({ _id: new ObjectId(convId) }, { $push: { messages: botMessage }, $set: { updatedAt: new Date() } });
+        await (convCol as any).updateOne({ _id: new ObjectId(convId) }, { $push: { messages: botMessage }, $set: { updatedAt: new Date() } });
 
         return new Response(JSON.stringify({ conversationId: convId, botMessage }), { status: 200 });
     } catch (err) {
