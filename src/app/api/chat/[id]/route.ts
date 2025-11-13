@@ -1,7 +1,6 @@
 import clientPromise from '../../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
 // context.params can sometimes be a Promise depending on Next version/runtime.
 async function resolveParams(paramsOrPromise: any) {
     if (!paramsOrPromise) return null;
@@ -12,6 +11,7 @@ async function resolveParams(paramsOrPromise: any) {
 }
 
 export async function GET(req: Request, context: any) {
+    const { authOptions } = await import('../../auth/[...nextauth]/route');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
@@ -38,6 +38,7 @@ export async function GET(req: Request, context: any) {
 }
 
 export async function DELETE(req: Request, context: any) {
+    const { authOptions } = await import('../../auth/[...nextauth]/route');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });

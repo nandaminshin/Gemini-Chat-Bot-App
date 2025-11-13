@@ -1,9 +1,9 @@
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route';
 
 export async function GET() {
+    const { authOptions } = await import('../auth/[...nextauth]/route');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ items: [] }), { status: 200 });
