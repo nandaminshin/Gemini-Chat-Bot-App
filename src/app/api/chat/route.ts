@@ -1,9 +1,11 @@
-import clientPromise from '../../../lib/mongodb';
+import clientPromise from '@/src/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/src/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ items: [] }), { status: 200 });
