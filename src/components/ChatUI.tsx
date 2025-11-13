@@ -169,6 +169,7 @@ export default function ChatUI() {
                 <div className="w-full max-w-md bg-gray-900/80 p-8 rounded-2xl border border-gray-800 text-center">
                     <KeyRound size={48} className="mx-auto text-sky-500 mb-4" />
                     <h2 className="text-2xl font-bold mb-2">Enter Your Gemini API Key</h2>
+
                     <p className="text-gray-400 mb-6">
                         You can get a free API key from{' '}
                         <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="text-sky-500 hover:underline">
