@@ -4,7 +4,7 @@ import ChatUI from "@/src/components/ChatUI";
 
 export default async function Home() {
 
-    const { authOptions } = await import('@/src/app/api/auth/[...nextauth]/route');
+    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any)
     if (session) {
         return (

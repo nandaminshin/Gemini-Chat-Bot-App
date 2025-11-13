@@ -3,7 +3,7 @@ import clientPromise from '@/src/lib/mongodb';
 import { ObjectId } from 'mongodb';
 
 export async function GET(req: Request) {
-    const { authOptions } = await import('../../auth/[...nextauth]/route');
+    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
@@ -28,7 +28,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    const { authOptions } = await import('../../auth/[...nextauth]/route');
+    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });

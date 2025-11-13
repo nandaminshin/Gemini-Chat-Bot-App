@@ -11,7 +11,7 @@ export async function POST(req: Request) {
         image: string;
         apiKey: string;
     };
-    const { authOptions } = await import('../../auth/[...nextauth]/route');
+    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });

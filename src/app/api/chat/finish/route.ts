@@ -2,7 +2,7 @@ import clientPromise from '@/src/lib/mongodb';
 import { callGemini } from '@/src/lib/gemini';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { authOptions } from '@/src/lib/auth';
 
 export const dynamic = 'force-dynamic';
 

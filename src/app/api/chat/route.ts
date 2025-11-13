@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 
 export async function GET() {
-    const { authOptions } = await import('../auth/[...nextauth]/route');
+    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ items: [] }), { status: 200 });
