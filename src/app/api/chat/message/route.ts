@@ -5,7 +5,15 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function POST(req: Request) {
+    type user = {
+        id: string;
+        name: string;
+        email: string;
+        image: string;
+        apiKey: string;
+    };
     const session: any = await getServerSession(authOptions as any);
+    console.log("here is the user: ", session.user);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
     }
