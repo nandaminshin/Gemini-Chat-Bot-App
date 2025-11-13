@@ -1,7 +1,10 @@
-import clientPromise from '../../../../lib/mongodb';
-import { callGemini } from '../../../../lib/gemini';
+import clientPromise from '@/src/lib/mongodb';
+import { callGemini } from '@/src/lib/gemini';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/src/lib/auth';
+
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
     type user = {
@@ -11,7 +14,6 @@ export async function POST(req: Request) {
         image: string;
         apiKey: string;
     };
-    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
