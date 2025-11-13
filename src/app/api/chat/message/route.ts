@@ -13,7 +13,6 @@ export async function POST(req: Request) {
         apiKey: string;
     };
     const session: any = await getServerSession(authOptions as any);
-    console.log("here is the user: ", session.user);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
     }

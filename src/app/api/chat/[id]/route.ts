@@ -2,19 +2,16 @@ import clientPromise from '../../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import type { NextRequest } from 'next/server';
-
-function extractParams(paramsOrPromise: any) {
-    return async (): Promise<any> => {
-        if (!paramsOrPromise) return null;
-        if (typeof paramsOrPromise.then === 'function') {
-            return await paramsOrPromise;
-        }
-        return paramsOrPromise;
-    };
+// context.params can sometimes be a Promise depending on Next version/runtime.
+async function resolveParams(paramsOrPromise: any) {
+    if (!paramsOrPromise) return null;
+    if (typeof paramsOrPromise.then === 'function') {
+        return await paramsOrPromise;
+    }
+    return paramsOrPromise;
 }
 
-export async function GET(req: NextRequest, context: any) {
+export async function GET(req: Request, context: any) {
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
@@ -22,7 +19,7 @@ export async function GET(req: NextRequest, context: any) {
     const userId = session.user.id;
 
     try {
-        const params = await extractParams(context?.params)();
+        const params = await resolveParams(context?.params);
         const id = params?.id;
         if (!id) return new Response(JSON.stringify({ error: 'id required' }), { status: 400 });
 
@@ -40,7 +37,7 @@ export async function GET(req: NextRequest, context: any) {
     }
 }
 
-export async function DELETE(req: NextRequest, context: any) {
+export async function DELETE(req: Request, context: any) {
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
@@ -48,7 +45,7 @@ export async function DELETE(req: NextRequest, context: any) {
     const userId = session.user.id;
 
     try {
-        const params = await extractParams(context?.params)();
+        const params = await resolveParams(context?.params);
         const id = params?.id;
         if (!id) {
             return new Response(JSON.stringify({ error: 'Conversation ID is required' }), { status: 400 });
