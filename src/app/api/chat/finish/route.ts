@@ -4,6 +4,8 @@ import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
