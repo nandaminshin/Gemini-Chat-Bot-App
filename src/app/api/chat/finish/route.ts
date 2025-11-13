@@ -2,9 +2,10 @@ import clientPromise from '../../../../lib/mongodb';
 import { callGemini } from '../../../../lib/gemini';
 import { ObjectId } from 'mongodb';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function POST(req: Request) {
+    // Import authOptions lazily to avoid import-time side-effects during Next build
+    const { authOptions } = await import('../../auth/[...nextauth]/route');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
