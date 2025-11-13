@@ -5,7 +5,7 @@ import ChatUI from "@/src/components/ChatUI";
 
 export default async function Home() {
 
-    const session = await getServerSession(authOptions as any)
+    const session: any = await getServerSession(authOptions as any)
     if (session) {
         return (
             <main className="min-h-screen p-6 bg-black-950">

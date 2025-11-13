@@ -4,7 +4,7 @@ import ChatUI from '@/src/components/ChatUI'
 import React from 'react'
 
 export default async function ChatPage() {
-    const session = await getServerSession(authOptions as any)
+    const session: any = await getServerSession(authOptions as any)
 
     if (!session) {
         // If no session, redirect to home. In App Router we'd normally use redirect(),
