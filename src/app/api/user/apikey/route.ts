@@ -1,9 +1,9 @@
 import { getServerSession } from 'next-auth';
 import clientPromise from '@/src/lib/mongodb';
 import { ObjectId } from 'mongodb';
+import { authOptions } from '@/src/lib/auth';
 
 export async function GET(req: Request) {
-    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
@@ -28,7 +28,6 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    const { authOptions } = await import('@/src/lib/auth');
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 });
