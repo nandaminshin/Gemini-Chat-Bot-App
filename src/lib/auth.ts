@@ -1,4 +1,5 @@
 import type { AuthOptions } from "next-auth";
+import type { Adapter } from "next-auth/adapters";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import clientPromise from "@/src/lib/mongodb";
@@ -8,7 +9,7 @@ if (!process.env.MONGODB_URI) {
 }
 
 export const authOptions: AuthOptions = {
-    adapter: MongoDBAdapter(clientPromise),
+    adapter: MongoDBAdapter(clientPromise) as Adapter,
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
