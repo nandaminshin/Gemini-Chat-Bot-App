@@ -3,6 +3,8 @@ import clientPromise from '@/src/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { authOptions } from '@/src/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request) {
     const session: any = await getServerSession(authOptions as any);
     if (!session || !session.user?.id) {
