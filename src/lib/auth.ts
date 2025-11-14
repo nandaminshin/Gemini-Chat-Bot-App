@@ -1,13 +1,14 @@
 import type { AuthOptions } from "next-auth";
-import type { Adapter } from "next-auth/adapters";
-import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import GoogleProvider from "next-auth/providers/google";
 import clientPromise from "@/src/lib/mongodb";
 
-const maybeAdapter = process.env.MONGODB_URI ? (MongoDBAdapter(clientPromise) as unknown as Adapter) : undefined;
+if (!process.env.MONGODB_URI) {
+    throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+}
 
 export const authOptions: AuthOptions = {
-    adapter: maybeAdapter,
+    adapter: MongoDBAdapter(clientPromise),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
