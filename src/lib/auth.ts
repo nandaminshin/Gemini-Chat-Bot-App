@@ -3,6 +3,7 @@ import type { Adapter } from "next-auth/adapters";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import clientPromise from "@/src/lib/mongodb";
+import { ObjectId } from 'mongodb';
 
 // Don't throw during build-time imports. The MongoDB client module already
 // avoids throwing during import; mirror that behavior here so importing
@@ -37,4 +38,21 @@ export const authOptions: AuthOptions = {
             return session;
         },
     },
+    events: ({
+        // When a user is deleted via the adapter (or admin action), clean up
+        // related conversations to avoid orphaned data.
+        async deleteUser(message: any) {
+            try {
+                const userId = message?.user?.id;
+                if (!userId) return;
+                const client = await clientPromise;
+                const db = client.db();
+                const convCol = db.collection('conversations');
+                await convCol.deleteMany({ userId: new ObjectId(userId) });
+                console.log(`Deleted conversations for user ${userId}`);
+            } catch (err) {
+                console.error('Failed to delete conversations for user:', err);
+            }
+        },
+    }) as any,
 };
