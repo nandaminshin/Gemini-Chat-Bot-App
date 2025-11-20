@@ -305,7 +305,7 @@ export default function ChatUI() {
                     </div>
                 </header>
 
-                <div ref={scrollRef} className="flex-1 overflow-auto bg-gradient-to-b from-[#071018] to-[#071018]/80 p-5 rounded-2xl border border-gray-800 no-scrollbar">
+                <div ref={scrollRef} className="flex-1 overflow-auto bg-gradient-to-b from-[#071018] to-[#071018]/80 p-5 rounded-2xl border border-gray-800">
                     <div className="space-y-4 max-w-3xl mx-auto">
                         {messages.map((m) => (
                             <div key={m.id} className={`flex ${m.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
